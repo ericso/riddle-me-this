@@ -1,5 +1,5 @@
 from selenium import webdriver
-
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 
@@ -42,7 +42,8 @@ class NewVisitorTest(unittest.TestCase):
     table = self.browser.find_element_by_id('id_riddles_table')
     rows = table.find_elements_by_tag_name('tr')
     self.assertTrue(
-      any(row.text == 'When is a door not a door?')
+      any(row.text == 'When is a door not a door?' for row in rows),
+      "New riddle did not appear in table"
     )
 
     # There is still a text box inviting him to add another riddle. He
