@@ -20,20 +20,35 @@ class NewVisitorTest(unittest.TestCase):
 
     # He notices the page title and header mention riddles
     self.assertIn('Riddles', self.browser.title)
-    self.fail('Finish the test!')
+    header_text = self.browser.find_element_by_tag_name('h1').text
+    self.assertIn('Riddles', header_text)
 
     # He is invited to enter a riddle of his own straight away
+    inputbox = self.browser.find_element_by_id('id_new_riddle')
+    self.assertEqual(
+      inputbox.get_attribute('placeholder'),
+      'Enter a riddle'
+    )
 
-    # He types "When as door not a door?" into a question text box
+    # He types "When is door not a door?" into a question text box
     # He types "Think outside the box" into a hint text box
     # He types "When it's ajar!" into an answer text box
+    inputbox.send_keys('When is door not a door?')
 
     # When He hits enter, the page updates, and now the page lists
     #  the riddle he just entered with all three lines of text
+    inputbox.send_keys(Keys.ENTER)
+
+    table = self.browser.find_element_by_id('id_riddles_table')
+    rows = table.find_elements_by_tag_name('tr')
+    self.assertTrue(
+      any(row.text == 'When is a door not a door?')
+    )
 
     # There is still a text box inviting him to add another riddle. He
     #  enters "What has four wheels and flys?" in the question, "Wrong
     #  spelling of flys" in the hint, and "A garbage truck!" in the answer
+    self.fail('Finish the test!')
 
     # The page updates again, and now shows both riddles on the page
 
