@@ -2,8 +2,14 @@
   <title>Riddles</title>
   <body>
     <h1>Riddles</h1>
-    <input id="id_new_riddle" placeholder="Enter a riddle">
+    <form method="POST">
+      <input name="riddle_question" id="id_new_riddle" placeholder="Enter a riddle">
+      {% csrf_token %}
+    </form>
     <table id="id_riddles_table">
+      <tr>
+        <td>{{ new_riddle_question }}</td>
+      </tr>
     </table>
   </body>
 </html>
