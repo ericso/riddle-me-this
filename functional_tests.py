@@ -12,6 +12,15 @@ class NewVisitorTest(unittest.TestCase):
   def tearDown(self):
     self.browser.quit()
 
+
+  ### Helper Methods ###
+  def check_for_row_in_list_table(self, row_text):
+    table = self.browser.find_element_by_id('id_riddles_table')
+    rows = table.find_elements_by_tag_name('tr')
+    self.assertIn(row_text, [row.text for row in rows])
+
+
+  ### Test Methods ###
   def test_can_enter_riddles_and_retrieve_them_later(self):
 
     # Eyrck has heard about a cool new online riddles app. He goes
@@ -39,9 +48,7 @@ class NewVisitorTest(unittest.TestCase):
     #  the riddle he just entered with all three lines of text
     inputbox.send_keys(Keys.ENTER)
 
-    table = self.browser.find_element_by_id('id_riddles_table')
-    rows = table.find_elements_by_tag_name('tr')
-    self.assertIn('When is a door not a door?', [row.text for row in rows])
+    self.check_for_row_in_list_table('When is a door not a door?')
 
     # There is still a text box inviting him to add another riddle. He
     #  enters "What has four wheels and flys?" in the question, "Wrong
@@ -51,13 +58,8 @@ class NewVisitorTest(unittest.TestCase):
     inputbox.send_keys(Keys.ENTER)
 
     # The page updates again, and now shows both riddles on the page
-    table = self.browser.find_element_by_id('id_riddles_table')
-    rows = table.find_elements_by_tag_name('tr')
-    self.assertIn('When is a door not a door?', [row.text for row in rows])
-    self.assertIn(
-      'What has four wheels and flies?',
-      [row.text for row in rows]
-    )
+    self.check_for_row_in_list_table('When is a door not a door?')
+    self.check_for_row_in_list_table('What has four wheels and flies?')
 
     # Eyrck wonders whether the site will remember his riddles. Then He sees
     # that the site has generated a unique URL for him -- there is some
